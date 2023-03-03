@@ -1,6 +1,6 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 
 size_t getSizeFromFileStream(FILE *stream);
-char *readTextFromFileStream(FILE *stream);
-void printAllStringsFromBuffer(char *buffer, size_t bufferSize);
+char *readDataFromFileStream(FILE *stream);

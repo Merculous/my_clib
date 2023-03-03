@@ -1,8 +1,7 @@
 
-#include <stdio.h>
 #include <stdlib.h>
 
-#include "io_utils.h"
+#include "img3.h"
 
 int main(int argc, const char **argv)
 {
@@ -12,10 +11,7 @@ int main(int argc, const char **argv)
         textFile = fopen(argv[1], "r");
         if (textFile != NULL)
         {
-            size_t textFileSize = getSizeFromFileStream(textFile);
-            char *textFileData = readTextFromFileStream(textFile);
-            printAllStringsFromBuffer(textFileData, textFileSize);
-            free(textFileData);
+            parseImg3(textFile);
             fclose(textFile);
             return 0;
         }
@@ -26,7 +22,7 @@ int main(int argc, const char **argv)
     }
     else
     {
-        printf("Usage: <text file>\n");
+        printf("Usage: <img3>\n");
         return 1;
     }
 }
