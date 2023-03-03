@@ -19,10 +19,10 @@ void printAllStringsFromCharBuffer(char *buffer, size_t bufferSize)
     }
 }
 
-char *convertUInt32ToASCII(uint32_t value)
+unsigned char *convertUInt32ToASCII(uint32_t value)
 {
     size_t bufferLen = sizeof(value) + sizeof(char);
-    char *buffer = (char *)malloc(sizeof(char) * bufferLen);
+    unsigned char *buffer = (unsigned char *)malloc(sizeof(char) * bufferLen);
     memcpy(buffer, &value, bufferLen);
     buffer[bufferLen] = '\0';
     return buffer;

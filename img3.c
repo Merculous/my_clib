@@ -53,7 +53,7 @@ void parseImg3(FILE *stream)
     img3 *img3file = (img3 *)malloc(sizeof(img3file));
     char *data = readDataFromFileStream(stream);
     memcpy(img3file, data, sizeof(img3));
-    char *magic = convertUInt32ToASCII(img3file->magic);
+    unsigned char *magic = convertUInt32ToASCII(img3file->magic);
     printf("%s\n", magic);
     free(magic);
     free(data);
