@@ -4,13 +4,13 @@
 
 #include "string_utils.h"
 
-void printAllStringsFromCharBuffer(char *buffer, size_t bufferSize)
+void printAllStringsFromCharBuffer(unsigned char *buffer, uint32_t bufferSize)
 {
-    for (size_t i = 0; i < bufferSize; i++)
+    for (uint32_t i = 0; i < bufferSize; i++)
     {
         if (buffer[i] != '\0')
         {
-            printf("%c", (unsigned char)buffer[i]);
+            printf("%c", buffer[i]);
         }
         else
         {
@@ -19,11 +19,11 @@ void printAllStringsFromCharBuffer(char *buffer, size_t bufferSize)
     }
 }
 
-unsigned char *convertUInt32ToASCII(uint32_t value)
+const unsigned char *convertUInt32ToASCII(const uint32_t value)
 {
-    size_t bufferLen = sizeof(value) + sizeof(char);
-    unsigned char *buffer = (unsigned char *)malloc(sizeof(char) * bufferLen);
-    memcpy(buffer, &value, bufferLen);
-    buffer[bufferLen] = '\0';
-    return buffer;
+    static unsigned char buffer[sizeof(value) + sizeof(char)];
+    memcpy(buffer, &value, sizeof(value));
+    buffer[sizeof(value) + sizeof(char)] = '\0';
+    static const unsigned char *bufferPointer = (const unsigned char *)buffer;
+    return bufferPointer;
 }

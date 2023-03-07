@@ -1,19 +1,19 @@
 
 #include "io_utils.h"
 
-size_t getSizeFromFileStream(FILE *stream)
+uint32_t getSizeFromFileStream(FILE *stream)
 {
-    size_t size;
-    fseek(stream, 0L, SEEK_END);
-    size = (size_t)ftell(stream);
-    fseek(stream, 0L, SEEK_SET);
+    uint32_t size;
+    fseek(stream, 0, SEEK_END);
+    size = (uint32_t)ftell(stream);
+    fseek(stream, 0, SEEK_SET);
     return size;
 }
 
 char *readDataFromFileStream(FILE *stream)
 {
-    size_t filesize = getSizeFromFileStream(stream);
-    char *buffer = (char *)malloc(sizeof(char) * filesize);
-    fread(buffer, sizeof(char), filesize, stream);
+    uint32_t streamSize = getSizeFromFileStream(stream);
+    char *buffer = (char *)malloc(sizeof(char) * streamSize);
+    fread(buffer, sizeof(char), streamSize, stream);
     return buffer;
 }

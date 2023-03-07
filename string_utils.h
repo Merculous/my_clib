@@ -1,6 +1,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
-void printAllStringsFromCharBuffer(char *buffer, size_t bufferSize);
-unsigned char *convertUInt32ToASCII(uint32_t value);
+void printAllStringsFromCharBuffer(unsigned char *buffer, uint32_t bufferSize);
+const unsigned char *convertUInt32ToASCII(const uint32_t value);
