@@ -13,7 +13,7 @@ uint32_t getSizeFromFileStream(FILE *stream)
 char *readDataFromFileStream(FILE *stream)
 {
     uint32_t streamSize = getSizeFromFileStream(stream);
-    char *buffer = (char *)malloc(sizeof(char) * streamSize);
+    char *buffer = (char *)malloc(sizeof(*buffer) * streamSize);
     fread(buffer, sizeof(char), streamSize, stream);
     return buffer;
 }
