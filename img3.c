@@ -37,16 +37,12 @@ typedef struct
     uint32_t ident;
 } img3;
 
-/*
 typedef struct
 {
     uint32_t magic;
     uint32_t totalLength;
     uint32_t dataLength;
-    uint8_t data[dataLength];
-    uint8_t pad[totalLength - dataLength - 12];
 } img3tag;
-*/
 
 void parseImg3(FILE *stream)
 {
@@ -54,7 +50,12 @@ void parseImg3(FILE *stream)
     char *data = readDataFromFileStream(stream);
     memcpy(img3file, data, sizeof(img3));
     const unsigned char *magic = convertUInt32ToASCII(img3file->magic);
-    printf("%s\n", magic);
+    printf("Magic: %s\n", magic);
+    printf("Packed size: %u\n", img3file->fullsize);
+    printf("Unpacked size: %u\n", img3file->sizeNoPack);
+    printf("sigCheckArea: %x\n", img3file->sigCheckArea);
+    const unsigned char *ident = convertUInt32ToASCII(img3file->ident);
+    printf("ident: %s\n", ident);
     free(data);
     free(img3file);
 }
