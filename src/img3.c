@@ -22,16 +22,24 @@ typedef struct img3Tag {
     uint8_t  data[dataLength];
     uint8_t  pad[totalLength - dataLength - 12]; // Typically padded to 4 byte multiple
 };
+VERS: iBoot version of the image
+SEPO: Security Epoch
+SDOM: Security Domain
+PROD: Production Mode
+CHIP: Chip to be used with. example: 0x8900 for S5L8900.
+BORD: Board to be used with
+KBAG: Contains the IV and key required to decrypt; encrypted with the GID Key
+SHSH: RSA encrypted SHA1 hash of the file
+CERT: Certificate
+ECID: Exclusive Chip ID unique to every device
+TYPE: Type of image, should contain the same string as the header's ident
+DATA: Real content of the file
+NONC: Nonce used when file was signed.
+CEPO: Chip epoch
+OVRD:
+RAND:
+SALT:
 */
-
-typedef struct
-{
-    uint32_t magic;
-    uint32_t fullsize;
-    uint32_t sizeNoPack;
-    uint32_t sigCheckArea;
-    uint32_t ident;
-} img3;
 
 typedef struct
 {
@@ -42,35 +50,26 @@ typedef struct
     uint8_t *pad;
 } img3tag;
 
+typedef struct
+{
+    uint32_t magic;
+    uint32_t fullsize;
+    uint32_t sizeNoPack;
+    uint32_t sigCheckArea;
+    uint32_t ident;
+    img3tag **tags;
+} img3;
+
 void parseImg3(FILE *stream)
 {
     img3 *img3file = (img3 *)malloc(sizeof(*img3file));
     uint8_t *data = (uint8_t *)readDataFromFileStream(stream);
-    memcpy(img3file, data, sizeof(img3));
-    const unsigned char *magic = convertUInt32ToASCII(img3file->magic);
-    printf("Magic: %s\n", magic);
+    memcpy(img3file, data, sizeof(uint32_t) * 5);
+    printf("Magic: %s\n", convertUInt32ToASCII(img3file->magic));
     printf("Packed size: %u\n", img3file->fullsize);
     printf("Unpacked size: %u\n", img3file->sizeNoPack);
-    printf("sigCheckArea: %x\n", img3file->sigCheckArea);
-    const unsigned char *ident = convertUInt32ToASCII(img3file->ident);
-    printf("ident: %s\n", ident);
-    // This code is horrible, but it "works" up until it seg faults! Lovely :P
-    /*
-    img3tag *tag = (img3tag *)malloc(sizeof(*tag));
-    for (uint32_t i = sizeof(*img3file); i < img3file->sizeNoPack; i += sizeof(*tag))
-    {
-        memcpy(tag, data + i, sizeof(*tag));
-        const unsigned char *tagMagic = convertUInt32ToASCII(tag->magic);
-        printf("Tag Magic: %s\n", tagMagic);
-        printf("Length: %u\n", tag->totalLength);
-        printf("Data length: %u\n", tag->dataLength);
-        tag->data = (uint8_t *)malloc(sizeof(*tag->data) * tag->dataLength);
-        memcpy(tag->data, data + i + sizeof(uint32_t) * 3, sizeof(uint8_t) * tag->dataLength); // FIXME
-        tag->pad = (uint8_t *)malloc(sizeof(*tag->pad) * tag->totalLength - tag->dataLength - 12);
-        memcpy(tag->pad, data + i + sizeof(uint32_t) * 3 + sizeof(uint8_t) * tag->dataLength, sizeof(uint8_t) * tag->totalLength - tag->dataLength - 12);
-    }
-    free(tag);
-    */
+    printf("sigCheckArea: %u\n", img3file->sigCheckArea);
+    printf("Ident: %s\n", convertUInt32ToASCII(img3file->ident));
     free(data);
     free(img3file);
 }
