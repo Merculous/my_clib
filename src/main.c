@@ -1,16 +1,16 @@
 
-#include "img3.h"
+#include <img3.h>
 
 int main(int argc, const char **argv)
 {
     if (argc == 2)
     {
-        FILE *textFile;
-        textFile = fopen(argv[1], "r");
-        if (textFile != NULL)
+        FILE *fp;
+        fp = fopen(argv[1], "r");
+        if (fp != NULL)
         {
-            parseImg3(textFile);
-            fclose(textFile);
+            parseImg3(fp);
+            fclose(fp);
             return 0;
         }
         else

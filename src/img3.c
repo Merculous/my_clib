@@ -1,6 +1,6 @@
 
-#include "io_utils.h"
-#include "string_utils.h"
+#include <io_utils.h>
+#include <string_utils.h>
 
 /*
 typedef struct img3File {
@@ -45,7 +45,7 @@ typedef struct
 void parseImg3(FILE *stream)
 {
     img3 *img3file = (img3 *)malloc(sizeof(*img3file));
-    char *data = readDataFromFileStream(stream);
+    uint8_t *data = (uint8_t *)readDataFromFileStream(stream);
     memcpy(img3file, data, sizeof(img3));
     const unsigned char *magic = convertUInt32ToASCII(img3file->magic);
     printf("Magic: %s\n", magic);

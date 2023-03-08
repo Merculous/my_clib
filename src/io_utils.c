@@ -1,5 +1,5 @@
 
-#include "io_utils.h"
+#include <io_utils.h>
 
 uint32_t getSizeFromFileStream(FILE *stream)
 {
@@ -10,10 +10,10 @@ uint32_t getSizeFromFileStream(FILE *stream)
     return size;
 }
 
-char *readDataFromFileStream(FILE *stream)
+int8_t *readDataFromFileStream(FILE *stream)
 {
     uint32_t streamSize = getSizeFromFileStream(stream);
-    char *buffer = (char *)malloc(sizeof(*buffer) * streamSize);
-    fread(buffer, sizeof(char), streamSize, stream);
+    int8_t *buffer = (int8_t *)malloc(sizeof(*buffer) * streamSize);
+    fread(buffer, sizeof(int8_t), streamSize, stream);
     return buffer;
 }

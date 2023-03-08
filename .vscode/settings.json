@@ -1,3 +1,7 @@
 {
-  "cmake.sourceDirectory": "${workspaceFolder}"
+  "cmake.sourceDirectory": "${workspaceFolder}",
+  "files.associations": {
+    "io_utils.h": "c",
+    "string_utils.h": "c"
+  }
 }

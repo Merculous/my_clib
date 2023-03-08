@@ -4,4 +4,4 @@
 #include <stdint.h>
 
 uint32_t getSizeFromFileStream(FILE *stream);
-char *readDataFromFileStream(FILE *stream);
+int8_t *readDataFromFileStream(FILE *stream);

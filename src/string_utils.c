@@ -1,20 +1,5 @@
 
-#include "string_utils.h"
-
-void printAllStringsFromCharBuffer(unsigned char *buffer, uint32_t bufferSize)
-{
-    for (uint32_t i = 0; i < bufferSize; i++)
-    {
-        if (buffer[i] != '\0')
-        {
-            printf("%c", buffer[i]);
-        }
-        else
-        {
-            printf("\n");
-        }
-    }
-}
+#include <string_utils.h>
 
 const unsigned char *convertUInt32ToASCII(const uint32_t value)
 {
