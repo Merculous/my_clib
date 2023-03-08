@@ -60,16 +60,44 @@ typedef struct
     img3tag **tags;
 } img3;
 
-void parseImg3(FILE *stream)
+img3tag *parseImg3Tag(uint8_t *data)
+{
+    img3tag *tag = (img3tag *)malloc(sizeof(*tag));
+    uint32_t img3tagheadsize = sizeof(uint32_t) * 3;
+    memcpy(tag, data, img3tagheadsize);
+    tag->data = (uint8_t *)malloc(sizeof(uint8_t) * tag->dataLength);
+    memcpy(tag->data, data + img3tagheadsize, sizeof(uint8_t) * tag->dataLength);
+    uint32_t padding = sizeof(uint8_t) * tag->totalLength - tag->dataLength - 12;
+    tag->pad = (uint8_t *)malloc(padding);
+    memcpy(tag->pad, data + img3tagheadsize + tag->dataLength, padding);
+    return tag;
+}
+
+img3 *parseImg3File(uint8_t *data)
 {
     img3 *img3file = (img3 *)malloc(sizeof(*img3file));
-    uint8_t *data = (uint8_t *)readDataFromFileStream(stream);
-    memcpy(img3file, data, sizeof(uint32_t) * 5);
-    printf("Magic: %s\n", convertUInt32ToASCII(img3file->magic));
+    uint32_t img3headsize = sizeof(uint32_t) * 5;
+    memcpy(img3file, data, img3headsize);
+    img3file->tags = (img3tag **)malloc(sizeof(*img3file->tags));
+    return img3file;
+}
+
+void parseImg3(FILE *stream)
+{
+    int8_t *data = readDataFromFileStream(stream);
+    img3 *img3file = parseImg3File((uint8_t *)data);
+    printf("Img3 magic: %s\n", convertUInt32ToASCII(img3file->magic));
     printf("Packed size: %u\n", img3file->fullsize);
     printf("Unpacked size: %u\n", img3file->sizeNoPack);
     printf("sigCheckArea: %u\n", img3file->sigCheckArea);
     printf("Ident: %s\n", convertUInt32ToASCII(img3file->ident));
-    free(data);
+    /*
+    printf("Tag: %s", convertUInt32ToASCII(tag->magic));
+    printf("Magic: %s\n", convertUInt32ToASCII(tag->magic));
+    printf("Total length: %u\n", tag->totalLength);
+    printf("Data length: %u\n", tag->dataLength);
+    */
+    free(img3file->tags);
     free(img3file);
+    free(data);
 }
