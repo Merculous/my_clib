@@ -1,8 +1,4 @@
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-
 #include "io_utils.h"
 #include "string_utils.h"
 
@@ -42,6 +38,8 @@ typedef struct
     uint32_t magic;
     uint32_t totalLength;
     uint32_t dataLength;
+    uint8_t *data;
+    uint8_t *pad;
 } img3tag;
 
 void parseImg3(FILE *stream)
@@ -56,6 +54,23 @@ void parseImg3(FILE *stream)
     printf("sigCheckArea: %x\n", img3file->sigCheckArea);
     const unsigned char *ident = convertUInt32ToASCII(img3file->ident);
     printf("ident: %s\n", ident);
+    // This code is horrible, but it "works" up until it seg faults! Lovely :P
+    /*
+    img3tag *tag = (img3tag *)malloc(sizeof(*tag));
+    for (uint32_t i = sizeof(*img3file); i < img3file->sizeNoPack; i += sizeof(*tag))
+    {
+        memcpy(tag, data + i, sizeof(*tag));
+        const unsigned char *tagMagic = convertUInt32ToASCII(tag->magic);
+        printf("Tag Magic: %s\n", tagMagic);
+        printf("Length: %u\n", tag->totalLength);
+        printf("Data length: %u\n", tag->dataLength);
+        tag->data = (uint8_t *)malloc(sizeof(*tag->data) * tag->dataLength);
+        memcpy(tag->data, data + i + sizeof(uint32_t) * 3, sizeof(uint8_t) * tag->dataLength); // FIXME
+        tag->pad = (uint8_t *)malloc(sizeof(*tag->pad) * tag->totalLength - tag->dataLength - 12);
+        memcpy(tag->pad, data + i + sizeof(uint32_t) * 3 + sizeof(uint8_t) * tag->dataLength, sizeof(uint8_t) * tag->totalLength - tag->dataLength - 12);
+    }
+    free(tag);
+    */
     free(data);
     free(img3file);
 }

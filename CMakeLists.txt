@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(MY_CLIB)
+set(SOURCES src/img3.c src/io_utils.c src/main.c src/string_utils.c)
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_C_FLAGS "-fdiagnostics-color=always -g2 -Wall -Wextra -Werror")
+set(CMAKE_CXX_FLAGS "-fdiagnostics-color=always -g2 -Wall -Wextra -Werror")
+include_directories(include)
+add_executable(${PROJECT_NAME} ${SOURCES})

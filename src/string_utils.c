@@ -1,7 +1,4 @@
 
-#include <stdio.h>
-#include <stdint.h>
-
 #include "string_utils.h"
 
 void printAllStringsFromCharBuffer(unsigned char *buffer, uint32_t bufferSize)
